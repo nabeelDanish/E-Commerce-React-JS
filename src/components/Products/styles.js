@@ -10,4 +10,9 @@ export default makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
+  loading: {
+    top: '50%',
+    left: '50%',
+    position: 'absolute',
+  }
 }));

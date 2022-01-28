@@ -1,17 +1,32 @@
 import React from 'react';
 import { Container, Typography, Button, Grid } from '@material-ui/core';
+import { CircularProgress } from '@material-ui/core';
 import useStyles from './styles'
 import CartItem from './CartItem/CartItem';
+import { Link } from 'react-router-dom';
 
 const Cart = ({ cart }) => {
     // Using Style classes
     const classes = useStyles();
 
+    // Null Return
+    if (!cart.line_items) {
+        return (
+            <>
+                <div className={classes.toolbar} />
+                <div className={classes.loading}>
+                    <CircularProgress size={80}/>
+                </div>
+            </>
+        )
+    }
+
     // Empty Cart Component
     const EmptyCart = () => {
         return (
             <Typography variant="subtitle1">
-                You have no items in your shopping cart!
+                You have no items in your shopping cart.
+                <Link to='/' className={classes.link}>Explore our collection of delicacies</Link>
             </Typography>
         )
     }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid } from "@material-ui/core";
+import { Grid, CircularProgress } from "@material-ui/core";
 
 import Product from "./Product/Product";
 import useStyles from './styles';
@@ -7,6 +7,18 @@ import useStyles from './styles';
 const Products = ({ products, onAddToCart }) => {
     // Using Styles
     const classes = useStyles();
+
+    // Loading
+    if (!products.length) {
+        return (
+            <>
+                <div className={classes.toolbar} />
+                <div className={classes.loading}>
+                    <CircularProgress size={80}/>
+                </div>
+            </>
+        )
+    }
 
     // Building Layout
     return (

@@ -29,4 +29,9 @@ export default makeStyles((theme) => ({
     width: '100%',
     justifyContent: 'space-between',
   },
+  loading: {
+    top: '50%',
+    left: '50%',
+    position: 'absolute',
+  }
 }));
