@@ -63,7 +63,9 @@ const Cart = ({ cart, handleUpdateToCartQty, handleRemoveFromCart, handleEmptyCa
                             size="large"
                             type="button"
                             variant="contained"
-                            color="primary">
+                            color="primary"
+                            component={Link}
+                            to='/checkout'>
                                 Checkout
                         </Button>
                     </div>

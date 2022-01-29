@@ -19,7 +19,7 @@ const Navbar = ({ totalItems }) => {
                 <Toolbar>
                     <Typography variant='h6' className={classes.title} color='inherit' component={Link} to="/">
                         <img src={logo} alt="DUKAN" height="25px" className={classes.image} />
-                        Nabeel's Halwa House
+                        Multani Halwa House
                     </Typography>
                     <div className={classes.grow}/>
                     { location.pathname === '/' ?
