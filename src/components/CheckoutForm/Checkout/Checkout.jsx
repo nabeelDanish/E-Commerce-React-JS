@@ -18,6 +18,9 @@ const Checkout = ({ cart }) => {
     // Checkout Token State
     const [checkoutToken, setCheckoutToken] = useState(null);
 
+    // Shippping Data State
+    const [shippingData, setShippingData] = useState({});
+
     // Creating the Checkout Token
     useEffect(() => {
         // Creating a generateToken function to call the API
@@ -34,6 +37,18 @@ const Checkout = ({ cart }) => {
         generateToken();
     }, [cart]);
 
+    // Moving the Step
+    const nextStep = () => setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    const backStep = () => setActiveStep((prevActiveStep) => prevActiveStep - 1);
+
+    // Moving Form Information
+    const next = (data) => {
+        console.log(data);
+        setShippingData(data);
+        console.log(shippingData);
+        nextStep();
+    }
+
     // Confirmation Component
     const Confirmation = () => (
         <div>
@@ -43,7 +58,7 @@ const Checkout = ({ cart }) => {
 
     // Form Component
     const Form = () => activeStep === 0 
-        ? <AddressForm checkoutToken={checkoutToken}/> 
+        ? <AddressForm checkoutToken={checkoutToken} next={next}/> 
         : <PaymentForm />
 
     // Building Layout
