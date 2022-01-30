@@ -59,7 +59,7 @@ const Checkout = ({ cart }) => {
     // Form Component
     const Form = () => activeStep === 0 
         ? <AddressForm checkoutToken={checkoutToken} next={next}/> 
-        : <PaymentForm />
+        : <PaymentForm checkoutToken={checkoutToken} />
 
     // Building Layout
     return (
