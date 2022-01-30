@@ -25,6 +25,16 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
     // Shippping Data State
     const [shippingData, setShippingData] = useState({});
 
+    // Timeout Finish State
+    const [isFinished, setIsFinished] = useState(false);
+
+    // Timout Function
+    const timeout = () => {
+        setTimeout(() => {
+            setIsFinished(true);
+        }, 3000);
+    }
+
     // Creating the Checkout Token
     useEffect(() => {
         // Creating a generateToken function to call the API
@@ -62,6 +72,16 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
                 <Button component={Link} to="/" variant="outline" type="button">Back to Home</Button>
             </div>
         </>
+    ) : isFinished ? (
+        <>
+            <div>
+                <Typography variant="h5">Thank You for your Purchase!</Typography>
+                <Divider className={classes.divider} />
+                <Typography variant="subtitle2">Order Reference: #0123456</Typography>
+                <br />
+                <Button component={Link} to="/" variant="outline" type="button">Back to Home</Button>
+            </div>
+        </>
     ) : (
         <div className={classes.spinner}>
             <CircularProgress />
@@ -87,7 +107,8 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
             backStep={backStep} 
             nextStep={nextStep} 
             onCaptureCheckout={onCaptureCheckout}
-            shippingData={shippingData}/>
+            shippingData={shippingData}
+            timeout={timeout}/>
 
     // Building Layout
     return (

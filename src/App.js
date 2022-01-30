@@ -67,6 +67,8 @@ const App = () => {
             refreshCart();
         } catch (error) {
             setErrorMessage(error.data.error.message);
+            // Testing only
+            refreshCart();
         }
     }
 
