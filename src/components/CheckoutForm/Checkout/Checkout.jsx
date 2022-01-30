@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Paper, Stepper, Step, StepLabel, Typography, CircularProgress, Divider, Button } from '@material-ui/core'
+import { Paper, Stepper, Step, StepLabel, Typography, CircularProgress, Divider, Button, CssBaseline } from '@material-ui/core'
 import useStyles from './styles';
 import AddressForm from '../AddressForm';
 import PaymentForm from '../PaymentForm';
 import { commerce } from '../../../lib/commerce';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 // Form Progress States
 const steps = ['Shipping Address', 'Payment Details']
@@ -12,6 +12,9 @@ const steps = ['Shipping Address', 'Payment Details']
 const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
     // Using Styles
     const classes = useStyles();
+
+    // Using navigate
+    const navigate = useNavigate();
 
     // Current Step State
     const [activeStep, setActiveStep] = useState(0);
@@ -30,7 +33,7 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
                 const token = await commerce.checkout.generateToken(cart.id, { type: 'cart' });
                 setCheckoutToken(token);
             } catch (error) {
-                console.log(error);
+                navigate.pushState('/');
             }
         }
 
@@ -89,6 +92,7 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
     // Building Layout
     return (
         <>
+        <CssBaseline />
             <div className={classes.toolbar}/>
             <main className={classes.layout}>
                 <Paper className={classes.paper}>
