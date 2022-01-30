@@ -11,6 +11,12 @@ const App = () => {
     // Cart State
     const [cart, setCart] = useState({});
 
+    // Order State
+    const [order, setOrder] = useState({});
+
+    // Error State
+    const [errorMessage, setErrorMessage] = useState('');
+
     // Fetching Products function
     const fetchProducts = async () => {
         const { data } = await commerce.products.list();
@@ -46,6 +52,24 @@ const App = () => {
         setCart(cart);
     }
 
+    // Refresh Cart
+    const refreshCart = async () => {
+        const newCart = await commerce.cart.refresh();
+        setCart(newCart);
+    }
+
+    // Placing Order Function
+    const handleCaptureCheckout = async (checkoutTokenId, newOrder) => {
+        try {
+            const incomingOrder = await commerce.checkout.capture(checkoutTokenId, newOrder);
+            
+            setOrder(incomingOrder);
+            refreshCart();
+        } catch (error) {
+            setErrorMessage(error.data.error.message);
+        }
+    }
+
     // Call to fetch once the app loads
     useEffect(() => {
         fetchProducts();
@@ -67,7 +91,13 @@ const App = () => {
                             handleEmptyCart={handleEmptyCart}
                         />
                     }/>
-                    <Route path='/checkout' element={<Checkout cart={cart} />}/>
+                    <Route path='/checkout' element={
+                        <Checkout 
+                            cart={cart} 
+                            order={order} 
+                            onCaptureCheckout={handleCaptureCheckout}
+                            error={errorMessage}/>
+                    }/>
                 </Routes>
             </div>
         </Router>

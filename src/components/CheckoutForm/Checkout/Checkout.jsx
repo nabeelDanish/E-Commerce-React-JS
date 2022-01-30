@@ -4,11 +4,12 @@ import useStyles from './styles';
 import AddressForm from '../AddressForm';
 import PaymentForm from '../PaymentForm';
 import { commerce } from '../../../lib/commerce';
+import { Link } from 'react-router-dom';
 
 // Form Progress States
 const steps = ['Shipping Address', 'Payment Details']
 
-const Checkout = ({ cart }) => {
+const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
     // Using Styles
     const classes = useStyles();
 
@@ -29,7 +30,7 @@ const Checkout = ({ cart }) => {
                 const token = await commerce.checkout.generateToken(cart.id, { type: 'cart' });
                 setCheckoutToken(token);
             } catch (error) {
-
+                console.log(error);
             }
         }
 
@@ -43,23 +44,47 @@ const Checkout = ({ cart }) => {
 
     // Moving Form Information
     const next = (data) => {
-        console.log(data);
         setShippingData(data);
-        console.log(shippingData);
         nextStep();
     }
 
     // Confirmation Component
-    const Confirmation = () => (
-        <div>
-            Confirmation
+    let Confirmation = () => order.customer? (
+        <>
+            <div>
+                <Typography variant="h5">Thank You for your Purchase, {order.customer.firstname} {order.customer.lastname}</Typography>
+                <Divider className={classes.divider} />
+                <Typography variant="subtitle2">Order Reference: {order.customer_reference}</Typography>
+                <br />
+                <Button component={Link} to="/" variant="outline" type="button">Back to Home</Button>
+            </div>
+        </>
+    ) : (
+        <div className={classes.spinner}>
+            <CircularProgress />
         </div>
-    )
+    );
+
+    // If errors then Confirmation problem
+    if (error) {
+        <>
+            <Typography variant="h5">Error: {error}</Typography>
+            <br />
+            <Button component={Link} to="/" variant="outline" type="button">Back to Home</Button>
+        </>
+    }
 
     // Form Component
     const Form = () => activeStep === 0 
-        ? <AddressForm checkoutToken={checkoutToken} next={next}/> 
-        : <PaymentForm checkoutToken={checkoutToken} />
+        ? <AddressForm 
+            checkoutToken={checkoutToken} 
+            next={next}/> 
+        : <PaymentForm 
+            checkoutToken={checkoutToken} 
+            backStep={backStep} 
+            nextStep={nextStep} 
+            onCaptureCheckout={onCaptureCheckout}
+            shippingData={shippingData}/>
 
     // Building Layout
     return (
